@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Sản Phẩm</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script>
+        // Kiểm tra ngay lập tức khi vào trang
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = 'login.html';
+        } else {
+            const user = JSON.parse(userStr);
+            if (user.role !== 'ADMIN') {
+                document.write("<h1 style='color:red; text-align:center; margin-top:50px'>403 - BẠN KHÔNG CÓ QUYỀN TRUY CẬP!</h1>");
+                document.write("<div style='text-align:center'><a href='index.html'>Quay về trang chủ</a></div>");
+                // Ngừng tải trang
+                window.stop(); 
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="logo">Admin Dashboard</div>
+        <div>
+            <span id="admin-name">Admin</span>
+            <button onclick="logout()">Đăng Xuất</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="admin-panel">
+            <div class="form-box">
+                <h3>Thêm Linh Kiện Mới</h3>
+                <input type="text" id="p-name" placeholder="Tên linh kiện">
+                <input type="text" id="p-category" placeholder="Loại (VD: GPU)">
+                <input type="number" id="p-price" placeholder="Giá tiền">
+                <button onclick="addProduct()">Thêm Mới</button>
+            </div>
+
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Loại</th>
+                        <th>Giá</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-product-list">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="./js/index.js"></script>
+    <script>
+        // Khởi chạy logic trang Admin
+        loadProductsForAdmin();
+    </script>
+</body>
+</html>
