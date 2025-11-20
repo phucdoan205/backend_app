@@ -1,18 +1,22 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f7f6;
+  /* Sử dụng gradient để nền trông hiện đại hơn */
+  background: linear-gradient(135deg, #e0eafc, #cfdef3);
   margin: 0;
   padding: 20px;
   color: #333;
 }
 
 .container {
-  background-color: white;
+  /* Hiệu ứng "kính mờ" để tạo chiều sâu */
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
   padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border-radius: 15px; /* Tăng độ bo tròn */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); /* Shadow mềm mại hơn */
   max-width: 1200px;
   margin: auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 input,
@@ -30,8 +34,8 @@ textarea {
 input:focus,
 textarea:focus {
   outline: none;
-  border-color: #5c67f2;
-  box-shadow: 0 0 5px rgba(92, 103, 242, 0.4);
+  border-color: #6a11cb; /* Màu focus mới */
+  box-shadow: 0 0 8px rgba(106, 17, 203, 0.3);
 }
 
 button {
@@ -48,6 +52,7 @@ button {
 
 button:hover {
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Thêm shadow khi hover */
 }
 
 /* Primary button style (e.g., Add, Save) */
@@ -55,7 +60,7 @@ button:hover {
   background-color: #5c67f2;
 }
 .btn-primary:hover {
-  background-color: #4a54d1;
+  background-color: #4a54d1; /* Giữ nguyên hoặc tinh chỉnh nhẹ */
 }
 
 /* Secondary button style (e.g., Edit) */
@@ -63,7 +68,7 @@ button:hover {
   background-color: #f0ad4e;
 }
 .btn-secondary:hover {
-  background-color: #ec971f;
+  background-color: #ec971f; /* Giữ nguyên hoặc tinh chỉnh nhẹ */
 }
 
 /* Danger button style (e.g., Delete) */
@@ -71,34 +76,37 @@ button:hover {
   background-color: #d9534f;
 }
 .btn-danger:hover {
-  background-color: #c9302c;
+  background-color: #c9302c; /* Giữ nguyên hoặc tinh chỉnh nhẹ */
 }
 
 .table {
-  border-collapse: collapse;
+  /* Thiết kế lại bảng để trông sạch sẽ hơn */
+  border-collapse: separate;
+  border-spacing: 0 10px; /* Tạo khoảng cách giữa các hàng */
   width: 100%;
   margin-top: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .table th,
 .table td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle; /* Căn giữa theo chiều dọc */
 }
 
 .table th {
-  background-color: #5c67f2;
+  background-color: #6a11cb; /* Màu header mới, đậm hơn */
   color: white;
   font-weight: bold;
   text-transform: uppercase;
+  border: none;
 }
 
 .table tbody tr:hover {
-  background-color: #f5f5f5;
+  transform: scale(1.01); /* Hiệu ứng phóng to nhẹ khi hover */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  position: relative;
 }
 
 .header {
