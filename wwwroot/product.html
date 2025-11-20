@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Products</title>
+    <link rel="stylesheet" href="./css/product.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h2>Quản lý sản phẩm (Admin)</h2>
+      <button onclick="logout()">Đăng xuất</button>
+    </div>
+    <div id="err" class="alert"></div>
+    <h3>Thêm / Sửa</h3>
+    <input id="pId" type="hidden" />
+    <input id="pName" placeholder="Tên" /><br />
+    <input id="pPrice" type="number" placeholder="Giá" /><br />
+    <input id="pStock" type="number" placeholder="Tồn kho" /><br />
+    <textarea id="pDesc" placeholder="Mô tả"></textarea><br />
+    <button onclick="save()">Lưu</button
+    ><button onclick="clearForm()">Clear</button>
+
+    <h3>Danh sách</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="list"></tbody>
+    </table>
+
+    <script src="./js/product.js"></script>
+  </body>
+</html>

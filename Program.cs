@@ -50,6 +50,8 @@ app.UseSwaggerUI();
 
 app.UseCors("AllowAll");
 
+app.UseStaticFiles();
+app.UseDefaultFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
