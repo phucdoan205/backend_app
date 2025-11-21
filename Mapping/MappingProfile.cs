@@ -8,7 +8,12 @@ namespace BackendApp.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductDTO>().ReverseMap();
+            // entity -> dto
+            CreateMap<Product, ProductDTO>();
+
+        // dto -> entity (KHI UPDATE)
+            CreateMap<ProductDTO, Product>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // QUAN TRỌNG!
             CreateMap<Customer, CustomerDTO>().ReverseMap();
             CreateMap<OrderCreateDTO, Order>()
                 .ForMember(dest => dest.OrderDetails, opt => opt.Ignore())
