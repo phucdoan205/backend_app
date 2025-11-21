@@ -44,6 +44,7 @@ button {
   cursor: pointer;
   border: none;
   border-radius: 5px;
+  background-color: #8e44ad;
   color: white;
   font-size: 14px;
   font-weight: bold;
