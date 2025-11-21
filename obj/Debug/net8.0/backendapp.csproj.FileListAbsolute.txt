@@ -1,0 +1,9 @@
+D:\backend_app\obj\Debug\net8.0\backendapp.csproj.AssemblyReference.cache
+D:\backend_app\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\backend_app\obj\Debug\net8.0\backendapp.GeneratedMSBuildEditorConfig.editorconfig
+D:\backend_app\obj\Debug\net8.0\backendapp.AssemblyInfoInputs.cache
+D:\backend_app\obj\Debug\net8.0\backendapp.AssemblyInfo.cs
+D:\backend_app\obj\Debug\net8.0\backendapp.csproj.CoreCompileInputs.cache
+D:\backend_app\obj\Debug\net8.0\backendapp.MvcApplicationPartsAssemblyInfo.cs
+D:\backend_app\obj\Debug\net8.0\backendapp.MvcApplicationPartsAssemblyInfo.cache
+D:\backend_app\obj\Debug\net8.0\backendapp.sourcelink.json
