@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Sản Phẩm</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script>
+        // Kiểm tra ngay lập tức khi vào trang
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = '../login.html';
+        } else {
+            const user = JSON.parse(userStr);
+            // So sánh case-insensitive để tránh lỗi do khác biệt chữ hoa/thường
+            if (user.role && user.role.toUpperCase() !== 'ADMIN') {
+                document.write("<h1 style='color:red; text-align:center; margin-top:50px'>403 - BẠN KHÔNG CÓ QUYỀN TRUY CẬP!</h1>");
+                document.write("<div style='text-align:center'><a href='../user/index.html'>Quay về trang chủ</a></div>");
+                // Ngừng tải trang
+                window.stop(); 
+            }
+        }
+    </script>
+</head>
+<body class="dashboard-body">
+
+  <!-- Header -->
+  <header class="topbar">
+    <div class="logo">PC <strong>MASTER</strong> <span class="admin-badge">ADMIN</span></div>
+    <div class="user-menu">
+      <span>Chào, <strong id="adminName">Admin</strong></span>
+      <a href="../user/index.html" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Thoát</a>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <a href="#" class="nav-item active" data-tab="products" onclick="switchTab('products')">
+          <i class="fas fa-box"></i> Quản Lý Sản Phẩm
+        </a>
+        <a href="#" class="nav-item" data-tab="categories" onclick="switchTab('categories')">
+          <i class="fas fa-tags"></i> Quản Lý Danh Mục
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Tab Sản Phẩm -->
+      <section id="products" class="tab active">
+        <div class="section-header">
+          <h2><i class="fas fa-cubes"></i> Quản Lý Sản Phẩm</h2>
+          <button class="btn-flash" onclick="openAddProductModal()">
+            <i class="fas fa-plus"></i> Thêm Sản Phẩm Mới
+          </button>
+        </div>
+
+      <!-- Tab Danh Mục -->
+      <section id="categories" class="tab" style="display:none;">
+        <div class="section-header">
+          <h2><i class="fas fa-tags"></i> Quản Lý Danh Mục</h2>
+          <button class="btn-flash" onclick="openAddCategoryModal()">
+            <i class="fas fa-plus"></i> Thêm Danh Mục Mới
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="product-table" id="categoryTable">
+            <thead>
+              <tr>
+                <th class="product-table_id">ID</th>
+                <th>Tên Danh Mục</th>
+                <th>Mô Tả</th>
+                <th width="120" style="text-align:center;">Hành Động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4" style="text-align:center;padding:40px;">Đang tải...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+        <div class="table-container">
+          <table class="product-table" id="productTable">
+            <thead>
+              <tr>
+                <th class="product-table_id">ID</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Danh Mục</th>
+                <th>Giá</th>
+                <th>Kho</th>
+                <th width="120" style="text-align:center;">Hành Động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6" style="text-align:center;padding:40px;">Đang tải...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tab Tạo Đơn Hàng -->
+      
+
+  <!-- Modal Sản Phẩm -->
+  <div id="productModal" class="modal">
+  <div class="modal-content" style="width:700px;">
+    <span class="close">×</span>
+    <h2 id="modalTitle"><i class="fas fa-cube"></i> Chi Tiết & Chỉnh Sửa Sản Phẩm</h2>
+    <div style="background:#f8f9fa;padding:20px;border-radius:12px;margin:20px 0;">
+      <p><strong>ID:</strong> <span id="detailId">-</span></p>
+      <p><strong>Tên hiện tại:</strong> <span id="detailName" style="font-size:18px;color:#2c3e50;">-</span></p>
+    </div>
+
+    <form id="productForm">
+      <input type="hidden" id="productId" />
+      <label>Tên sản phẩm</label>
+      <input type="text" id="productName" required />
+
+      <label>Danh mục</label>
+      <select id="category" required>
+        <option value="">Chọn danh mục</option>
+        <!-- Categories sẽ được load động từ API -->
+      </select>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <label>Giá bán (VNĐ)</label>
+          <input type="number" id="price" required />
+        </div>
+        <div>
+          <label>Số lượng tồn kho</label>
+          <input type="number" id="stock" required />
+        </div>
+      </div>
+
+      <div style="margin-top:25px;display:flex;gap:15px;">
+        <button type="submit" class="btn-flash">
+          <i class="fas fa-save"></i> Cập Nhật Sản Phẩm
+        </button>
+        <button type="button" id="btnDeleteProduct" class="btn-delete-full">
+          <i class="fas fa-trash-alt"></i> Xóa Sản Phẩm Này
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+  <!-- Modal Danh Mục -->
+  <div id="categoryModal" class="modal">
+    <div class="modal-content" style="width:700px;">
+      <span class="close">×</span>
+      <h2 id="categoryModalTitle"><i class="fas fa-tag"></i> Chi Tiết & Chỉnh Sửa Danh Mục</h2>
+      <div style="background:#f8f9fa;padding:20px;border-radius:12px;margin:20px 0;">
+        <p><strong>ID:</strong> <span id="categoryDetailId">-</span></p>
+        <p><strong>Tên hiện tại:</strong> <span id="categoryDetailName" style="font-size:18px;color:#2c3e50;">-</span></p>
+      </div>
+
+      <form id="categoryForm">
+        <input type="hidden" id="categoryId" />
+        <label>Tên danh mục</label>
+        <input type="text" id="categoryName" required />
+
+        <label>Mô tả</label>
+        <textarea id="categoryDescription" rows="3" placeholder="Mô tả danh mục (tùy chọn)"></textarea>
+
+        <div style="margin-top:25px;display:flex;gap:15px;">
+          <button type="submit" class="btn-flash">
+            <i class="fas fa-save"></i> Lưu Danh Mục
+          </button>
+          <button type="button" id="btnDeleteCategory" class="btn-delete-full">
+            <i class="fas fa-trash-alt"></i> Xóa Danh Mục Này
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Function to switch tabs
+    function switchTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      
+      // Remove active class from all nav items
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Show selected tab
+      const selectedTab = document.getElementById(tabName);
+      if (selectedTab) {
+        selectedTab.style.display = 'block';
+      }
+      
+      // Add active class to selected nav item
+      const selectedNav = document.querySelector(`[data-tab="${tabName}"]`);
+      if (selectedNav) {
+        selectedNav.classList.add('active');
+      }
+    }
+  </script>
+  <script src="js/config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/categories.js"></script>
+</body>
+</html>

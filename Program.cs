@@ -1,27 +1,44 @@
 using BackendApp.Data;
 using BackendApp.Mapping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    // Enable sensitive data logging for debugging
+    options.EnableSensitiveDataLogging();
+    options.LogTo(Console.WriteLine, LogLevel.Information);
+});
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 
+// Đăng ký Controllers và cấu hình JSON để tránh vòng lặp vô tận
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
 // JWT Auth
 var key = builder.Configuration["Jwt:Key"];
 var issuer = builder.Configuration["Jwt:Issuer"];
 var audience = builder.Configuration["Jwt:Audience"];
+
+if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+{
+    throw new InvalidOperationException("JWT configuration is missing. Please check appsettings.json");
+}
 
 builder.Services.AddAuthentication("JwtBearer")
     .AddJwtBearer("JwtBearer", options =>
@@ -34,7 +51,9 @@ builder.Services.AddAuthentication("JwtBearer")
             ValidAudience = audience,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
-            ValidateLifetime = true
+            ValidateLifetime = true,
+            // Map role claim correctly
+            RoleClaimType = System.Security.Claims.ClaimTypes.Role
         };
     });
 

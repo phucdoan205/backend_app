@@ -25,7 +25,11 @@ namespace BackendApp.Controllers
             var user = _db.Users.FirstOrDefault(u => u.Username == dto.Username && u.Password == dto.Password);
             if (user == null) return Unauthorized(new { message = "Sai tài khoản hoặc mật khẩu" });
 
-            var token = JwtService.CreateToken(user, _config["Jwt:Key"], _config["Jwt:Issuer"], _config["Jwt:Audience"]);
+            var key = _config["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is missing");
+            var issuer = _config["Jwt:Issuer"] ?? throw new InvalidOperationException("JWT Issuer is missing");
+            var audience = _config["Jwt:Audience"] ?? throw new InvalidOperationException("JWT Audience is missing");
+
+            var token = JwtService.CreateToken(user, key, issuer, audience);
             return Ok(new { token });
         }
     }

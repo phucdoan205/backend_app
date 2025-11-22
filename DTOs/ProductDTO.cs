@@ -7,5 +7,7 @@ namespace BackendApp.DTOs
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public string? Description { get; set; }
+        public int? CategoriesID { get; set; }
+        public string? CategoryName { get; set; }
     }
 }
