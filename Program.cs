@@ -49,6 +49,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors("AllowAll");
+// Thêm dòng này để route được đăng ký đúng
+app.UseRouting();
 
 app.UseStaticFiles();
 app.UseDefaultFiles();
