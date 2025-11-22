@@ -21,12 +21,12 @@ namespace BackendApp.Controllers
             _mapper = mapper;
         }
         // Trong OrdersController.cs, bên trong class OrdersController
-        [HttpGet]
-        [Route("test")] // Đường dẫn là: /api/orders/test
-        public IActionResult TestRoute()
-        {
-            return Ok("OrdersController is running!");
-        }
+        // [HttpGet]
+        // [Route("test")] // Đường dẫn là: /api/orders/test
+        // public IActionResult TestRoute()
+        // {
+        //     return Ok("OrdersController is running!");
+        // }
 
         // GET api/orders/{id}
         [HttpGet("{id}")]
