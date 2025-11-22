@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\c#\\vscode\\backendapp\\backendapp.csproj": {}
+    "D:\\c#\\vscode\\backend_app\\backendapp.csproj": {}
   },
   "projects": {
-    "D:\\c#\\vscode\\backendapp\\backendapp.csproj": {
+    "D:\\c#\\vscode\\backend_app\\backendapp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\c#\\vscode\\backendapp\\backendapp.csproj",
+        "projectUniqueName": "D:\\c#\\vscode\\backend_app\\backendapp.csproj",
         "projectName": "backendapp",
-        "projectPath": "D:\\c#\\vscode\\backendapp\\backendapp.csproj",
+        "projectPath": "D:\\c#\\vscode\\backend_app\\backendapp.csproj",
         "packagesPath": "C:\\Users\\MY PC\\.nuget\\packages\\",
-        "outputPath": "D:\\c#\\vscode\\backendapp\\obj\\",
+        "outputPath": "D:\\c#\\vscode\\backend_app\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

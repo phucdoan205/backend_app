@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GDh5Xv2vZ3A=",
+  "dgSpecHash": "W3m9MQWO4CE=",
   "success": true,
-  "projectFilePath": "D:\\c#\\vscode\\backendapp\\backendapp.csproj",
+  "projectFilePath": "D:\\c#\\vscode\\backend_app\\backendapp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MY PC\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\MY PC\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

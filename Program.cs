@@ -52,11 +52,14 @@ app.UseCors("AllowAll");
 // Thêm dòng này để route được đăng ký đúng
 app.UseRouting();
 
-app.UseStaticFiles();
-app.UseDefaultFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
+app.UseDefaultFiles();
+
+
 
 app.Run();
