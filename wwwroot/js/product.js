@@ -23,6 +23,7 @@ async function load() {
         <td>${p.name}</td>
         <td>${p.price}</td>
         <td>${p.stock}</td>
+        <td>${p.description}</td>
         <td>
           <button onclick="edit(${p.id})">Sửa</button>
           <button onclick="del(${p.id})">Xóa</button>
