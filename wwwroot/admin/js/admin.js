@@ -1,65 +1,65 @@
-// js/auth.js
-const API_URL = 'http://localhost:5062/api/auth'; // API URL đã cập nhật
+// js/admin.js - Dành riêng cho trang Quản trị (admin/index.html)
 
-// Kiểm tra đăng nhập khi vào dashboard
-if (window.location.pathname.includes('dashboard.html')) {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Bạn cần đăng nhập với quyền Admin!');
-    window.location.href = 'index.html';
-  } else {
-    // Gọi API kiểm tra token + role
-    fetch(API_URL + '/me', {
-      headers: { 'Authorization': 'Bearer ' + token }
-    })
-    .then(res => {
-      if (!res.ok) throw new Error();
-      return res.json();
-    })
-    .then(user => {
-      if (user.role !== 'ADMIN') {
-        alert('Bạn không có quyền truy cập trang Admin!');
-        localStorage.removeItem('token');
-        window.location.href = 'index.html';
-      } else {
-        document.getElementById('adminName').textContent = user.username;
-      }
-    })
-    .catch(() => {
-      localStorage.removeItem('token');
-      window.location.href = 'index.html';
-    });
-  }
-}
+// 1. BẢO VỆ TRANG (Security Guard)
+// Kiểm tra ngay lập tức, nếu không phải Admin thì đá ra ngoài luôn
+(function checkAdminAuth() {
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('currentUser');
 
-// Đăng nhập
-document.getElementById('loginForm')?.addEventListener('submit', function(e) {
-  e.preventDefault();
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  fetch(API_URL + '/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.token && data.role === 'ADMIN') {
-      localStorage.setItem('token', data.token);
-      window.location.href = 'dashboard.html';
-    } else {
-      document.getElementById('loginError').textContent = 'Sai thông tin hoặc không phải Admin!';
+    if (!token || !userStr) {
+        alert("Bạn chưa đăng nhập!");
+        window.location.href = '/login.html';
+        return;
     }
-  })
-  .catch(() => {
-    document.getElementById('loginError').textContent = 'Lỗi kết nối server!';
-  });
-});
 
-// Đăng xuất
-document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
-  e.preventDefault();
-  localStorage.removeItem('token');
-  window.location.href = 'index.html';
+    try {
+        const user = JSON.parse(userStr);
+        // Chuyển role về chữ hoa để so sánh cho chắc
+        const roleUpper = user.role ? user.role.toUpperCase() : "";
+
+        if (roleUpper !== 'ADMIN') {
+            alert("Bạn không có quyền truy cập trang Quản trị!");
+            window.location.href = '/index.html'; // Đẩy về trang chủ user
+        }
+    } catch (e) {
+        console.error("Lỗi dữ liệu user:", e);
+        localStorage.clear();
+        window.location.href = '/login.html';
+    }
+})();
+
+// 2. XỬ LÝ GIAO DIỆN KHI TRANG ĐÃ LOAD
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- Hiển thị tên Admin ---
+    const userStr = localStorage.getItem('currentUser');
+    if (userStr) {
+        const user = JSON.parse(userStr);
+        const adminNameEl = document.getElementById('adminName');
+        
+        // Nếu tìm thấy chỗ hiển thị tên thì điền vào
+        if (adminNameEl) {
+            adminNameEl.textContent = user.username || "Admin";
+        }
+    }
+
+    // --- Xử lý Nút Đăng Xuất ---
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Chặn thẻ a chuyển trang
+
+            if (confirm("Bạn chắc chắn muốn đăng xuất?")) {
+                // Xóa sạch sành sanh mọi thứ
+                localStorage.removeItem('token');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('role');
+                localStorage.removeItem('cart'); // Xóa giỏ hàng (tùy chọn)
+
+                // Chuyển hướng về trang Login
+                window.location.href = '/login.html';
+            }
+        });
+    }
 });

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Nhập System</title>
-    <link rel="stylesheet" href="/CSS/style.css">
+    <link rel="stylesheet" href="./CSS/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -15,7 +15,6 @@
 
         <div class="login-box">
             <h2>SYSTEM ACCESS</h2>
-            <p class="subtitle">Admin: admin/admin123 | User: user/user123</p>
             
             <form id="loginForm">
                 <div class="user-box">
@@ -37,7 +36,7 @@
             </form>
 
             <p id="error-msg"></p>
-            <a href="index.html" class="back-link">← Quay lại trang chủ</a>
+            <a href="/wwwroot/user/index.html" class="back-link">← Quay lại trang chủ</a>
         </div>
     </div>
     <div id="loading-overlay" class="loading-overlay">
@@ -45,6 +44,6 @@
         <h3 class="success-text">Đăng nhập thành công!</h3>
         <p>Đang chuyển hướng...</p>
     </div>
-    <script src="js/login.js"></script> 
+    <script src="js/login.js?v=2"></script> <!-- v=2 khiến trình duyệt tưởng là file mới -->
 </body>
 </html>

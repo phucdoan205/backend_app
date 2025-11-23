@@ -1,141 +1,146 @@
-// js/home.js
-
 const API_BASE = "http://localhost:5062/api";
 let dbProducts = [];
 let categories = [];
 
-// Hàm render sản phẩm dùng chung
-function createProductCard(p) {
-    const categoryName = p.categoryName || 'Chưa phân loại';
-    return `
-        <div class="product-card">
-            <div class="category">${categoryName}</div>
-            <h3 onclick="goToShop('${categoryName}')">${p.name}</h3>
-            <div class="price">${Number(p.price).toLocaleString()}đ</div>
-            <button onclick="quickAdd(${p.id}, '${p.name}', ${p.price})">
-                <i class="fas fa-cart-plus"></i> Thêm
-            </button>
-        </div>
-    `;
-}
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadCategories();
+    await initHomePage(); 
+    updateCartCount();
+});
 
-// Fetch products from API
-async function loadProducts() {
-    try {
-        const response = await fetch(`${API_BASE}/products`);
-        if (!response.ok) throw new Error('Failed to fetch products');
-        dbProducts = await response.json();
-        return dbProducts;
-    } catch (error) {
-        console.error('Error loading products:', error);
-        return [];
-    }
-}
-
-// Fetch categories from API
+// 1. Lấy danh mục
 async function loadCategories() {
     try {
-        const response = await fetch(`${API_BASE}/categories`);
-        if (!response.ok) throw new Error('Failed to fetch categories');
-        categories = await response.json();
-        return categories;
+        const res = await fetch(`${API_BASE}/categories`);
+        if (!res.ok) throw new Error('Failed to fetch categories');
+        categories = await res.json();
+        console.log("Danh mục tải về:", categories); // Debug
     } catch (error) {
         console.error('Error loading categories:', error);
-        return [];
     }
 }
 
-// Render các Section
+// 2. Lấy sản phẩm và chia vào các ô
 async function initHomePage() {
-    // Load dữ liệu từ API
-    await loadProducts();
-    
-    if (dbProducts.length === 0) {
-        console.warn('No products found');
+    try {
+        const res = await fetch(`${API_BASE}/products`);
+        if (!res.ok) throw new Error('Failed to fetch products');
+        dbProducts = await res.json();
+
+        if (dbProducts.length === 0) return;
+
+        // --- A. FLASH SALE (Lấy 8 sản phẩm ngẫu nhiên hoặc mới nhất) ---
+        renderProductSlider('flash-sale-grid', dbProducts.slice(0, 8));
+
+        // --- B. PC GAMING ---
+        // Tìm category có tên chứa "PC" hoặc "Mainboard" (tùy dữ liệu của bạn)
+        const pcCat = categories.find(c => c.name.toUpperCase().includes("PC") || c.name.toUpperCase().includes("MAINBOARD"));
+        if (pcCat) {
+            const pcItems = dbProducts.filter(p => p.categoriesID === pcCat.id);
+            renderProductSlider('pc-grid', pcItems);
+        }
+
+        // --- C. VGA ---
+        const vgaCat = categories.find(c => c.name.toUpperCase().includes("VGA"));
+        if (vgaCat) {
+            const vgaItems = dbProducts.filter(p => p.categoriesID === vgaCat.id);
+            renderProductSlider('vga-grid', vgaItems);
+        }
+
+        // --- D. LAPTOP ---
+        // Nếu chưa có Laptop, mình lấy tạm CPU để test hiển thị
+        const laptopCat = categories.find(c => c.name.toUpperCase().includes("LAPTOP") || c.name.toUpperCase().includes("CPU"));
+        if (laptopCat) {
+            const laptopItems = dbProducts.filter(p => p.categoriesID === laptopCat.id);
+            renderProductSlider('laptop-grid', laptopItems);
+        }
+
+    } catch (error) {
+        console.error('Error init home page:', error);
+    }
+}
+
+// 3. HÀM VẼ SLIDER
+function renderProductSlider(containerId, products) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    if (!products || products.length === 0) {
+        container.innerHTML = '<p style="padding:20px; color:#fff; text-align:center;">Đang cập nhật sản phẩm...</p>';
         return;
     }
 
-    // 1. Render Flash Sale (lấy 5 sản phẩm cuối)
-    const flashSaleContainer = document.getElementById('flash-sale-grid');
-    const saleItems = dbProducts.slice(-5);
-    if (flashSaleContainer) {
-        flashSaleContainer.innerHTML = saleItems.map(p => createProductCard(p)).join('');
-    }
+    const html = `
+        <div class="carousel-wrapper">
+            <button class="carousel-btn prev" onclick="scrollCarousel('${containerId}', -1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="carousel-track" id="track-${containerId}">
+                ${products.map(p => {
+                    const cat = categories.find(c => c.id === p.categoriesID);
+                    const catName = cat ? cat.name : 'Linh kiện';
+                    
+                    // SỬA LỖI ẢNH TẠI ĐÂY: Dùng p.imageUrl (chuẩn C#)
+                    // Nếu ảnh lỗi hoặc null, dùng ảnh placeholder
+                    const imgUrl = p.imageUrl || "https://via.placeholder.com/300x300.png?text=No+Image";
+                    
+                    return `
+                    <div class="product-card">
+                        <div class="category">${catName}</div>
+                        
+                        <div class="img-container">
+                             <img src="${imgUrl}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x300.png?text=Error'">
+                        </div>
 
-    // 2. Render PC Gaming (tìm category có tên chứa "PC")
-    const pcContainer = document.getElementById('pc-grid');
-    if (pcContainer) {
-        const pcCategory = categories.find(c => c.name && c.name.toUpperCase().includes('PC'));
-        const pcItems = pcCategory 
-            ? dbProducts.filter(p => p.categoriesID === pcCategory.id)
-            : dbProducts.filter(p => p.categoryName && p.categoryName.toUpperCase().includes('PC'));
-        pcContainer.innerHTML = pcItems.length > 0 
-            ? pcItems.map(p => createProductCard(p)).join('')
-            : '<p>Chưa có sản phẩm</p>';
-    }
+                        <h3 onclick="alert('Xem chi tiết ID: ${p.id}')" title="${p.name}">
+                            ${p.name}
+                        </h3>
+                        
+                        <div class="price">${Number(p.price).toLocaleString()}đ</div>
+                        
+                        <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">
+                            <i class="fas fa-cart-plus"></i> Thêm
+                        </button>
+                    </div>
+                    `;
+                }).join('')}
+            </div>
 
-    // 3. Render VGA
-    const vgaContainer = document.getElementById('vga-grid');
-    if (vgaContainer) {
-        const vgaCategory = categories.find(c => c.name && c.name.toUpperCase().includes('VGA'));
-        const vgaItems = vgaCategory 
-            ? dbProducts.filter(p => p.categoriesID === vgaCategory.id)
-            : dbProducts.filter(p => p.categoryName && p.categoryName.toUpperCase().includes('VGA'));
-        vgaContainer.innerHTML = vgaItems.length > 0 
-            ? vgaItems.map(p => createProductCard(p)).join('')
-            : '<p>Chưa có sản phẩm</p>';
-    }
+            <button class="carousel-btn next" onclick="scrollCarousel('${containerId}', 1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    `;
 
-    // 4. Render Laptop
-    const laptopContainer = document.getElementById('laptop-grid');
-    if (laptopContainer) {
-        const laptopCategory = categories.find(c => c.name && c.name.toUpperCase().includes('LAPTOP'));
-        const laptopItems = laptopCategory 
-            ? dbProducts.filter(p => p.categoriesID === laptopCategory.id)
-            : dbProducts.filter(p => p.categoryName && p.categoryName.toUpperCase().includes('LAPTOP'));
-        laptopContainer.innerHTML = laptopItems.length > 0 
-            ? laptopItems.map(p => createProductCard(p)).join('')
-            : '<p>Chưa có sản phẩm</p>';
+    container.innerHTML = html;
+}
+
+function scrollCarousel(containerId, direction) {
+    const track = document.getElementById(`track-${containerId}`);
+    if (track) {
+        track.scrollBy({ left: direction * 240, behavior: 'smooth' });
     }
 }
 
-// Xử lý Click chuyển hướng
-function goToShop(categoryName) {
-    // Tìm category ID từ tên
-    const category = categories.find(c => c.name === categoryName);
-    if (category) {
-        // Chuyển sang trang find với filter category
-        window.location.href = `find/index.html?categoryId=${category.id}`;
-    } else {
-        // Fallback: chuyển sang trang find với tên category
-        window.location.href = `find/index.html?category=${encodeURIComponent(categoryName)}`;
-    }
-}
-
-// Xử lý thêm nhanh vào giỏ (Logic rút gọn của index.js)
-function quickAdd(id, name, price) {
+// ... (Giữ nguyên các hàm addToCart, updateCartCount bên dưới) ...
+function addToCart(id, name, price) {
+    // ... Code cũ ...
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const exist = cart.find(x => x.id === id);
-    if(exist) {
-        exist.quantity++;
+    const existItem = cart.find(x => x.productId === id);
+    if (existItem) {
+        existItem.quantity += 1;
     } else {
-        cart.push({ id, name, price, quantity: 1, image: "https://via.placeholder.com/100" });
+        cart.push({ productId: id, name: name, price: price, quantity: 1 });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert("Đã thêm " + name + " vào giỏ!");
-    
-    // Cập nhật badge số lượng
-    const badge = document.querySelector('.badge');
-    if(badge) badge.innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
+    alert("Đã thêm " + name + " vào giỏ hàng!");
+    updateCartCount();
 }
 
-// Chạy khi load trang
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadCategories();
-    await initHomePage();
-    
-    // Cập nhật số lượng giỏ hàng ngay lập tức
+function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const badge = document.querySelector('.badge');
-    if(badge) badge.innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
-});
+    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.querySelector('.badge'); 
+    if (badge) badge.innerText = total;
+}

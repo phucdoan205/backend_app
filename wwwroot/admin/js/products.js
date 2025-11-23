@@ -3,6 +3,7 @@
 
 let products = [];
 let productCategories = [];
+let searchTimeout = null; // Biến để lưu timeout tìm kiếm
 
 // ========== LOAD DỮ LIỆU TỪ API ==========
 async function loadCategoriesForProducts() {
@@ -69,33 +70,43 @@ function renderCategoryOptions() {
 }
 
 // ========== RENDER PRODUCTS VÀO BẢNG ==========
-function renderProducts() {
+function renderProducts(customList = null) {
     const tbody = document.querySelector('#productTable tbody');
     if (!tbody) return;
-    
-    tbody.innerHTML = '';
-    
-    if (products.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;">Chưa có sản phẩm nào</td></tr>';
+
+    const listToDisplay = customList ? customList : products;
+
+    if (!listToDisplay || listToDisplay.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#777;">Không tìm thấy sản phẩm nào!</td></tr>';
         return;
     }
-    
-    products.forEach(p => {
-        const categoryName = p.categoryName || 'Chưa phân loại';
-        tbody.innerHTML += `
+
+    // --- TỐI ƯU HÓA TẠI ĐÂY ---
+    // 1. Tạo một chuỗi HTML trống
+    let htmlContent = '';
+
+    // 2. Cộng dồn chuỗi (Chưa đụng vào giao diện)
+    listToDisplay.forEach(p => {
+        const cat = productCategories.find(c => c.id === p.categoriesID);
+        const categoryName = cat ? cat.name : 'Chưa phân loại';
+
+        htmlContent += `
             <tr>
                 <td class="product-table_id">${p.id}</td>
-                <td>${p.name}</td>
-                <td>${categoryName}</td>
-                <td>${Number(p.price).toLocaleString()}₫</td>
+                <td><strong>${p.name}</strong></td>
+                <td><span class="badge-category">${categoryName}</span></td>
+                <td style="color:#d35400;font-weight:bold;">${Number(p.price).toLocaleString()}₫</td>
                 <td>${p.stock || 0}</td>
                 <td style="text-align:center;">
-                    <button class="btn-action-edit" onclick="openEditModal(${p.id})">
+                    <button class="btn-action-edit" onclick="openEditModal(${p.id})" title="Sửa">
                         <i class="fas fa-edit"></i>
                     </button>
                 </td>
             </tr>`;
     });
+
+    // 3. Vẽ ra giao diện (Chỉ tốn 1 lần xử lý)
+    tbody.innerHTML = htmlContent;
 }
 
 // ========== CÁC HÀM TOÀN CỤC ==========
@@ -254,3 +265,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 });
+
+
+// Hàm tìm kiếm sản phẩm
+function searchProducts() {
+    // 1. Xóa lệnh tìm kiếm cũ nếu người dùng vẫn đang gõ
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+
+    // 2. Đặt lịch tìm kiếm sau 300ms
+    searchTimeout = setTimeout(() => {
+        const input = document.getElementById('searchInput');
+        if (!input) return;
+        
+        const keyword = input.value.toLowerCase().trim();
+        console.log("Bắt đầu tìm kiếm:", keyword); // Chỉ hiện khi đã dừng gõ
+
+        if (!keyword) {
+            renderProducts(products);
+            return;
+        }
+
+        const filtered = products.filter(p => 
+            (p.name && p.name.toLowerCase().includes(keyword)) || 
+            (p.id && p.id.toString().includes(keyword))
+        );
+
+        renderProducts(filtered);
+    }, 300); // Thời gian chờ 300ms
+}
