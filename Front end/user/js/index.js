@@ -85,7 +85,15 @@ function quickAdd(id, name, price) {
     
     // Cập nhật badge số lượng
     const badge = document.querySelector('.badge');
-    if(badge) badge.innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
+    if(badge) {  
+        var quantity = cart.reduce((sum, i) => sum + i.quantity, 0);
+        
+        if (quantity != 0) {
+            badge.innerText = quantity;
+            badge.style.visibility = "visible";
+        }
+    }
+    // if(badge) badge.innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
 }
 
 // Chạy khi load trang
@@ -95,5 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cập nhật số lượng giỏ hàng ngay lập tức
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const badge = document.querySelector('.badge');
-    if(badge) badge.innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
+    if(badge) {  
+        var quantity = cart.reduce((sum, i) => sum + i.quantity, 0);
+        
+        if (quantity != 0) {
+            badge.innerText = quantity;
+            badge.style.visibility = "visible";
+        }
+    }
+    // if(badge) badge.innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
 });
