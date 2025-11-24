@@ -9,5 +9,6 @@ namespace BackendApp.DTOs
         public string? Description { get; set; }
         public int? CategoriesID { get; set; }
         public string? CategoryName { get; set; }
+        public string? ImagePath { get; set; }
     }
 }

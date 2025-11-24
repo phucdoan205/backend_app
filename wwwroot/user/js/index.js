@@ -26,6 +26,7 @@ async function initHomePage() {
         const res = await fetch(`${API_BASE}/products`);
         if (!res.ok) throw new Error('Failed to fetch products');
         dbProducts = await res.json();
+        console.log("Fetch result:" , dbProducts)
 
         if (dbProducts.length === 0) return;
 
@@ -70,6 +71,11 @@ function renderProductSlider(containerId, products) {
         return;
     }
 
+    console.log("===============")
+    console.log("Rendering: ", container)
+    console.log("Data: ", products)
+    console.log("=================")
+
     const html = `
         <div class="carousel-wrapper">
             <button class="carousel-btn prev" onclick="scrollCarousel('${containerId}', -1)">
@@ -83,7 +89,7 @@ function renderProductSlider(containerId, products) {
                     
                     // SỬA LỖI ẢNH TẠI ĐÂY: Dùng p.imageUrl (chuẩn C#)
                     // Nếu ảnh lỗi hoặc null, dùng ảnh placeholder
-                    const imgUrl = p.imageUrl || "https://via.placeholder.com/300x300.png?text=No+Image";
+                    const imgUrl = p.imagePath || "https://via.placeholder.com/300x300.png?text=No+Image";
                     
                     return `
                     <div class="product-card">

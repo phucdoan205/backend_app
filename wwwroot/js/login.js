@@ -55,10 +55,12 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
       if (roleUpper === "ADMIN") {
         console.log("=> GO TO ADMIN");
-        window.location.href = `${baseUrl}/admin/index.html`;
+        // window.location.href = `${baseUrl}/admin/index.html`;
+        window.location.href = "admin/index.html";
       } else {
         console.log("=> GO TO USER");
-        window.location.href = `${baseUrl}/user/index.html`;
+        // window.location.href = `${baseUrl}/user/index.html`;
+        window.location.href = `user/index.html`;
       }
     }, 1000);
     
