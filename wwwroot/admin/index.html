@@ -8,7 +8,7 @@
         // Kiểm tra ngay lập tức khi vào trang
         const userStr = localStorage.getItem('currentUser');
         if (!userStr) {
-            alert("Bạn chưa đăng nhập!");
+            // alert("Bạn chưa đăng nhập!");
             window.location.href = '../login.html';
         } else {
             const user = JSON.parse(userStr);
@@ -29,7 +29,7 @@
     <div class="logo">PC <strong>MASTER</strong> <span class="admin-badge">ADMIN</span></div>
     <div class="user-menu">
       <span>Chào, <strong id="adminName">Admin</strong></span>
-      <a href="#" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Thoát</a>
+      <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i>Đăng xuất</button>
     </div>
   </header>
 

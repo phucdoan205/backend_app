@@ -118,8 +118,11 @@
     <script>
         // Script check login nhanh
         const u = JSON.parse(localStorage.getItem('currentUser'));
+        console.log(u)
         if(u) document.getElementById('user-info').innerHTML = `Xin chào, <b>${u.username}</b>`;
         else document.getElementById('user-info').innerHTML = `<a href="login.html">Đăng nhập</a>`;
+
     </script>
+
 </body>
 </html>
