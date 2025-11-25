@@ -150,7 +150,7 @@ window.openEditModal = function (id) {
 };
 
 window.deleteProduct = async function (id) {
-    if (!confirm('Xóa sản phẩm này thật nhé? Không thể hoàn tác!')) {
+    if (!confirm('')) {
         return;
     }
     

@@ -26,7 +26,8 @@
 <body class="dashboard-body">
 
   <header class="topbar">
-    <div class="logo">PC <strong>MASTER</strong> <span class="admin-badge">ADMIN</span></div>
+      <div class="logo">PC MASTER<span class="admin-badge">ADMIN</span></div>
+    
     <div class="user-menu">
       <span>Chào, <strong id="adminName">Admin</strong></span>
       <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i>Đăng xuất</button>
@@ -50,6 +51,9 @@
         </a>
         <a href="#" class="nav-item" data-tab="categories" onclick="switchTab('categories')">
           <i class="fas fa-tags"></i> Danh Mục
+        </a>
+        <a href="../user/index.html" class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+          <i class="fas fa-tachometer-alt"></i> Thoát
         </a>
       </nav>
     </aside>
@@ -226,6 +230,42 @@
 
     </main>
   </div>
+  <!-- MODAL SIÊU ĐẸP + CHẠY NGON -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Thêm Sản Phẩm Mới</h2>
+      <span class="close">×</span>
+    </div>
+    <form id="productForm">
+      <input type="hidden" id="productId">
+      <div class="form-grid">
+        <div class="fg">
+          <label>Tên sản phẩm <span class="req">*</span></label>
+          <input type="text" id="productName" required>
+        </div>
+        <div class="fg">
+          <label>Danh mục <span class="req">*</span></label>
+          <select id="category" required></select>
+        </div>
+        <div class="fg">
+          <label>Giá (₫) <span class="req">*</span></label>
+          <input type="number" id="price" required min="1">
+        </div>
+        <div class="fg">
+          <label>Kho</label>
+          <input type="number" id="stock" value="0" min="0">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn save">Lưu</button>
+        <button type="button" id="btnDeleteProduct" class="btn delete" style="display:none;">Xóa</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
   <script>
     // Function to switch tabs
     function switchTab(tabName) {
@@ -253,5 +293,12 @@
   <script src="./js/categories.js"></script>
   <script src="./js/chart.js"></script>
   <script src="./js/admin.js"></script>
+  <script>
+    // Load ngay khi trang mở – không cần đợi bấm tab
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof loadCategoriesForProducts === "function") loadCategoriesForProducts();
+        if (typeof loadProducts === "function") loadProducts();
+    });
+</script>
 </body>
 </html>
