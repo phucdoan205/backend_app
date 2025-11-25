@@ -41,22 +41,23 @@ document.addEventListener("DOMContentLoaded", () => {
       adminNameEl.textContent = user.username || "Admin";
     }
   }
+const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Chặn thẻ a chuyển trang
 
-  // --- Xử lý Nút Đăng Xuất ---
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", (e) => {
-      e.preventDefault(); // Chặn thẻ a chuyển trang
-
-      // Xóa sạch sành sanh mọi thứ
-      localStorage.removeItem("token");
-      localStorage.removeItem("currentUser");
-      localStorage.removeItem("role");
-      localStorage.removeItem("cart"); // Xóa giỏ hàng (tùy chọn)
-
-      // Chuyển hướng về trang Login
-      window.location.href = '../login.html';
-    });
-  }
+            if (confirm("Bạn chắc chắn muốn đăng xuất?")) {
+                // Xóa sạch sành sanh mọi thứ
+                localStorage.removeItem('token');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('role');
+                localStorage.removeItem('cart'); // Xóa giỏ hàng (tùy chọn)
+                
+                // Chuyển hướng về trang Login
+                window.location.href = '../login.html';
+            }
+        });
+    }
+  
 });

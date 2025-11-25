@@ -17,7 +17,7 @@
             <button><i class="fas fa-search"></i></button>
         </div>
         <div class="user-actions" id="user-info"></div>
-        <a href="/user/shoppingCart/cart.html" class="cart-icon">
+        <a href="../user/shoppingCart/cart.html" class="cart-icon">
             <i class="fas fa-shopping-cart"></i>
             <span class="badge">0</span>
             <span>Giỏ hàng</span>
@@ -119,8 +119,8 @@
         // Script check login nhanh
         const u = JSON.parse(localStorage.getItem('currentUser'));
         console.log(u)
-        if(u) document.getElementById('user-info').innerHTML = `Xin chào, <b>${u.username}</b>`;
-        else document.getElementById('user-info').innerHTML = `<a href="login.html">Đăng nhập</a>`;
+        // if(u) document.getElementById('user-info').innerHTML = `Xin chào, <b>${u.username}</b>`;
+        // else document.getElementById('user-info').innerHTML = `<a href="../register/register.html">Đăng ký</a>`;
 
     </script>
 
