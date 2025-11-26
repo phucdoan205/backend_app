@@ -4,23 +4,6 @@
     <meta charset="UTF-8">
     <title>Quản Lý Sản Phẩm</title>
     <link rel="stylesheet" href="./css/index.css">
-    <script>
-        // Kiểm tra ngay lập tức khi vào trang
-        const userStr = localStorage.getItem('currentUser');
-        if (!userStr) {
-            // alert("Bạn chưa đăng nhập!");
-            window.location.href = '../login.html';
-        } else {
-            const user = JSON.parse(userStr);
-            // So sánh case-insensitive để tránh lỗi do khác biệt chữ hoa/thường
-            if (user.role && user.role.toUpperCase() !== 'ADMIN') {
-                document.write("<h1 style='color:red; text-align:center; margin-top:50px'>403 - BẠN KHÔNG CÓ QUYỀN TRUY CẬP!</h1>");
-                document.write("<div style='text-align:center'><a href='../user/index.html'>Quay về trang chủ</a></div>");
-                // Ngừng tải trang
-                window.stop(); 
-            }
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="dashboard-body">
@@ -265,7 +248,25 @@
   </div>
 </div>
 
+    <script>
+        // Kiểm tra ngay lập tức khi vào trang
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) {
+            // alert("Bạn chưa đăng nhập!");
+            window.location.href = '../login.html';
+        } else {
+            const user = JSON.parse(userStr);
+            // So sánh case-insensitive để tránh lỗi do khác biệt chữ hoa/thường
+            if (user.role && user.role.toUpperCase() !== 'ADMIN') {
+                document.write("<h1 style='color:red; text-align:center; margin-top:50px'>403 - BẠN KHÔNG CÓ QUYỀN TRUY CẬP!</h1>");
+                document.write("<div style='text-align:center'><a href='../user/index.html'>Quay về trang chủ</a></div>");
+                // Ngừng tải trang
+                window.stop(); 
+            }
+        }
+    </script>
 
+    
   <script>
     // Function to switch tabs
     function switchTab(tabName) {

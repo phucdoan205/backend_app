@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Master Shop - Trang Chủ</title>
-    <link rel="stylesheet" href="../css/style.css"> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/user/css/style.css"> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -19,14 +19,11 @@
         <div class="user-actions" id="user-info">
             </div>
         
-            <a href="../shoppingCart/cart.html">
-                <div class="cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="badge">0</span>
-                    <span>Giỏ hàng</span>
-                </div>
-            </a>
-
+        <div class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge">0</span>
+            <span>Giỏ hàng</span>
+        </div>
     </header>
 
     <div class="shop-container">
@@ -51,12 +48,11 @@
                 <label class="checkbox-item"><input type="checkbox" value="Asus"> Asus</label>
             </div>
 
-            <div class="filter-section">
+            <div class="filter-section" id="category-filter-section">
                 <h3>Loại linh kiện</h3>
-                <label class="checkbox-item"><input type="checkbox" value="GPU"> Card màn hình (GPU)</label>
-                <label class="checkbox-item"><input type="checkbox" value="CPU"> Vi xử lý (CPU)</label>
-                <label class="checkbox-item"><input type="checkbox" value="RAM"> RAM</label>
-                <label class="checkbox-item"><input type="checkbox" value="Mainboard"> Bo mạch chủ</label>
+                <div id="category-checkboxes">
+                    <p style="color: #999; font-size: 14px;">Đang tải...</p>
+                </div>
             </div>
         </aside>
 
@@ -77,5 +73,6 @@
     </div>
 
     <script src="../js/find.js"></script>
+    <script src="../js/index.js"></script>
 </body>
 </html>
