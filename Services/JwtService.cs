@@ -14,7 +14,7 @@ namespace BackendApp.Services
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
+            
             var claims = new List<Claim>
             {
                 new Claim("id", user.Id.ToString()),

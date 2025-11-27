@@ -20,7 +20,7 @@ namespace BackendApp.Controllers
             _db = db;
             _config = config;
         }
-
+        
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDTO dto)
         {
