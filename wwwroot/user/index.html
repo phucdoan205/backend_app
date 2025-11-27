@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Master - Hệ thống PC High-End hàng đầu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css"> <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">PC MASTER</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Bạn tìm gì hôm nay?">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="user-actions" id="user-info"></div>
+        <a href="../user/shoppingCart/cart.html" class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge">0</span>
+            <span>Giỏ hàng</span>
+            <a href="../login.html" style="color: #2563eb;">Đăng xuất</a>
+        </a>
+    </header>
+
+    <section class="hero-banner">
+        <div class="banner-content">
+            <img src="../image/banner.png"alt="Banner">
+        </div>
+    </section>
+
+    <section class="policy-bar">
+        <div class="policy-item"><i class="fas fa-shipping-fast"></i> Giao hàng hỏa tốc 1h</div>
+        <div class="policy-item"><i class="fas fa-shield-alt"></i> Bảo hành chính hãng</div>
+        <div class="policy-item"><i class="fas fa-sync-alt"></i> Đổi trả trong 30 ngày</div>
+        <div class="policy-item"><i class="fas fa-tools"></i> Hỗ trợ lắp đặt tại nhà</div>
+    </section>
+
+    <div class="shop-container landing-layout">
+        
+        <section class="flash-sale-section">
+            <div class="fs-header">
+                <h2><i class="fas fa-bolt"></i> FLASH SALE</h2>
+                <div class="timer">Kết thúc trong: <span>02:15:40</span></div>
+            </div>
+            <div class="fs-grid" id="flash-sale-grid">
+                </div>
+        </section>
+
+        <section class="category-block">
+            <div class="cat-banner" style="background-color: #1e293b;">
+                <h3>PC GAMING</h3>
+                <p>Chiến mọi tựa game</p>
+                <img src="../image/PC_Gaming.png" alt="PC Gaming">
+                <a href="index.html?filter=PC" class="btn-view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div id="pc-grid" style="flex: 1; overflow: hidden; position: relative;"></div>
+        </section>
+
+        <section class="category-block">
+            <div class="cat-banner" style="background-color: #3730a3;">
+                <h3>VGA</h3>
+                <p>Đồ họa đỉnh cao</p>
+                <img src="../image/vga.png" alt="VGA">
+                <a href="index.html?filter=VGA" class="btn-view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div id="vga-grid" style="flex: 1; overflow: hidden; position: relative;"></div>
+        </section>
+
+        <section class="category-block">
+            <div class="cat-banner" style="background-color: #be123c;">
+                <h3>LAPTOP GAMING</h3>
+                <p>Mỏng nhẹ - Mạnh mẽ</p>
+                <img src="../image/Laptop_Gaming.png" alt="Laptop">
+                <a href="index.html?filter=Laptop" class="btn-view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div id="laptop-grid" style="flex: 1; overflow: hidden; position: relative;"></div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>Về PC MASTER</h3>
+                <p>Hệ thống bán lẻ linh kiện PC hàng đầu Việt Nam. Cam kết chính hãng, giá tốt nhất thị trường.</p>
+                <div class="socials">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-youtube"></i>
+                    <i class="fab fa-tiktok"></i>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Hỗ trợ khách hàng</h3>
+                <ul>
+                    <li><a href="#">Hướng dẫn mua hàng</a></li>
+                    <li><a href="#">Chính sách bảo hành</a></li>
+                    <li><a href="#">Vận chuyển & Giao nhận</a></li>
+                    <li><a href="#">Phương thức thanh toán</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Tổng đài hỗ trợ</h3>
+                <p class="hotline">Mua hàng: 1800.xxxx</p>
+                <p class="hotline">Bảo hành: 1800.yyyy</p>
+                <p>Email: hotro@pcmaster.vn</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 PC Master Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/index.js"></script>
+    <script src="js/data.js"></script>
+    <script>
+        // Script check login nhanh
+        const u = JSON.parse(localStorage.getItem('currentUser'));
+        console.log(u)
+        // if(u) document.getElementById('user-info').innerHTML = `Xin chào, <b>${u.username}</b>`;
+        // else document.getElementById('user-info').innerHTML = `<a href="../register/register.html">Đăng ký</a>`;
+
+    </script>
+
+</body>
+</html>

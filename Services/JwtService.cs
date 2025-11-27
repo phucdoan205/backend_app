@@ -1,32 +1,41 @@
-public class JwtService
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using BackendApp.Models;
+using Microsoft.IdentityModel.Tokens;
+
+namespace BackendApp.Services
 {
-    private readonly string _secret;
-    private readonly string _issuer;
-
-    public JwtService(IConfiguration config)
+    public static class JwtService
     {
-        _secret = config["Jwt:Key"];
-        _issuer = config["Jwt:Issuer"];
-    }
-
-    public string GenerateToken(User user)
-    {
-        var claims = new[]
+        public static string CreateToken(User user, string key, string issuer, string audience)
         {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role)
-        };
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var claims = new List<Claim>
+            {
+                new Claim("id", user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                
+                // 1. QUAN TRỌNG: Lấy Role trực tiếp từ User được truyền vào (Không được hardcode!)
+                new Claim("role", user.Role), 
 
-        var token = new JwtSecurityToken(
-            issuer: _issuer,
-            expires: DateTime.Now.AddHours(5),
-            claims: claims,
-            signingCredentials: creds
-        );
+                // 2. QUAN TRỌNG: Thêm ID ngẫu nhiên để Token luôn khác nhau mỗi lần login
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) 
+            };
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.Now.AddHours(24), // Thời gian hết hạn
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }
