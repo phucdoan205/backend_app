@@ -69,8 +69,10 @@ app.UseSwaggerUI();
 
 app.UseCors("AllowAll");
 
-app.UseStaticFiles();
+//đưa default lên trước vì thứ tự trong đây rất quan trọng
 app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
