@@ -105,7 +105,7 @@ function renderProductSlider(containerId, products) {
                         
                         <div class="price">${Number(p.price).toLocaleString()}đ</div>
                         
-                        <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">
+                        <button onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.imagePath}')">
                             <i class="fas fa-cart-plus"></i> Thêm
                         </button>
                     </div>
@@ -130,14 +130,14 @@ function scrollCarousel(containerId, direction) {
 }
 
 // ... (Giữ nguyên các hàm addToCart, updateCartCount bên dưới) ...
-function addToCart(id, name, price) {
+function addToCart(id, name, price, image) {
     // ... Code cũ ...
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existItem = cart.find(x => x.productId === id);
     if (existItem) {
         existItem.quantity += 1;
     } else {
-        cart.push({ productId: id, name: name, price: price, quantity: 1 });
+        cart.push({ productId: id, name: name, price: price, quantity: 1, image: image});
     }
     localStorage.setItem('cart', JSON.stringify(cart));
     alert("Đã thêm " + name + " vào giỏ hàng!");
