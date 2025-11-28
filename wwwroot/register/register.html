@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng Ký Tài Khoản</title>
-    <link rel="stylesheet" href="./style.css"> </head>
+    <link rel="stylesheet" href="./style.css"> 
+</head>
 <body class="login-body">
     <div class="login-wrapper">
         <div class="login-card">
@@ -25,53 +26,18 @@
                     <input type="password" id="regConfirmPass" placeholder="Nhập lại mật khẩu" required>
                 </div>
                 
-                <button type="submit" class="btn-login">ĐĂNG KÝ NGAY</button>
+                <button type="submit" class="btn-login" id="btnRegister">ĐĂNG KÝ NGAY</button>
                 
-                <p class="error-msg" id="regError"></p>
+                <p class="error-msg" id="regMessage" style="margin-top: 15px; font-weight: bold; text-align: center; min-height: 20px;"></p>
                 
                 <div style="margin-top: 20px;">
-                    <a href="/wwwroot/login.html" style="text-decoration: none; color: #e67e22;">Đã có tài khoản? Đăng nhập</a>
+                    <a href="../login.html" style="text-decoration: none; color: #e67e22;">Đã có tài khoản? Đăng nhập</a>
                 </div>
             </form>
         </div>
     </div>
-    <script src="../admin/js/"></script>
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPass = document.getElementById('regConfirmPass').value;
-            const errorMsg = document.getElementById('regError');
-
-            // Validate cơ bản
-            if (password !== confirmPass) {
-                errorMsg.textContent = "Mật khẩu nhập lại không khớp!";
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/auth/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password, email })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    alert("Đăng ký thành công! Vui lòng đăng nhập.");
-                    window.location.href = 'login.html';
-                } else {
-                    errorMsg.textContent = data.message || "Đăng ký thất bại!";
-                }
-            } catch (err) {
-                console.error(err);
-                errorMsg.textContent = "Lỗi kết nối server!";
-            }
-        });
-    </script>
+    
+    <script src="../admin/js/config.js"></script>
+    <script src="../js/api_register.js"></script>
 </body>
 </html>

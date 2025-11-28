@@ -224,3 +224,25 @@ body {
     to { opacity: 1; }
 }
 
+/* --- Link Đăng ký  --- */
+.register-link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #8f9aa3; /* Màu xám công nghệ */
+}
+
+.register-link a {
+    color: #03e9f4; /* Màu Cyan Neon chủ đạo */
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 5px;
+    transition: 0.3s;
+    letter-spacing: 1px;
+}
+
+.register-link a:hover {
+    color: #fff;
+    text-shadow: 0 0 5px #03e9f4, 0 0 10px #03e9f4; /* Hiệu ứng phát sáng */
+    text-decoration: underline;
+}
