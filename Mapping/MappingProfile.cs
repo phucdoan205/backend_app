@@ -23,7 +23,7 @@ namespace BackendApp.Mapping
             CreateMap<OrderCreateDTO, Order>()
                 .ForMember(dest => dest.OrderDetails, opt => opt.Ignore())
                 .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
-                .ForMember(dest => dest.OrderDate, opt => opt.Ignore())
+                .ForMember(dest => dest.CreateData, opt => opt.Ignore())
                 .ForMember(dest => dest.Status, opt => opt.Ignore());
             CreateMap<OrderItemDTO, OrderDetail>()
                 .ForMember(dest => dest.UnitPrice, opt => opt.Ignore())

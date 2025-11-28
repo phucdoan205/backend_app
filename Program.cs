@@ -52,13 +52,16 @@ builder.Services.AddAuthentication("JwtBearer")
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
             ValidateLifetime = true,
+            
             // Map role claim correctly
-            RoleClaimType = System.Security.Claims.ClaimTypes.Role
+            RoleClaimType = "role",
+            NameClaimType = "username",
         };
+        options.MapInboundClaims = false;
     });
 
 builder.Services.AddAuthorization();
-
+builder.Services.AddMemoryCache();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

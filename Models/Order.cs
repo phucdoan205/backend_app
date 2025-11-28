@@ -5,14 +5,15 @@ namespace BackendApp.Models
     public class Order
     {
         public int Id { get; set; }
+        public int CustomerId { get; set; } 
         
-        // --- THÊM CỘT NÀY ĐỂ SỬA LỖI CustomerId ---
-        public int CustomerId { get; set; }
+        public DateTime CreateData { get; set; } 
         
-        // Giữ nguyên các trường khác
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow; // Tên chuẩn là OrderDate
+        public int Status { get; set; }
         public decimal TotalAmount { get; set; }
-        public int Status { get; set; } // 0: Pending, 1: Shipping...
+        
+        [ForeignKey("CustomerId")]
+        public Customer Customer { get; set; } 
 
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }

@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using BackendApp.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BackendApp.Controllers
 {
@@ -23,8 +25,8 @@ namespace BackendApp.Controllers
             var sevenDaysAgo = DateTime.UtcNow.AddDays(-7);
 
             var data = await _context.Orders
-                .Where(o => o.OrderDate >= sevenDaysAgo)
-                .GroupBy(o => o.OrderDate.Date)
+                .Where(o => o.CreateData >= sevenDaysAgo)
+                .GroupBy(o => o.CreateData.Date)
                 .Select(g => new {
                     Date = g.Key,
                     Total = g.Sum(o => o.TotalAmount)
@@ -50,6 +52,26 @@ namespace BackendApp.Controllers
                 Products = totalProducts,
                 Users = totalUsers
             });
+        }
+
+        [HttpGet("checkout-token")]
+        [Authorize] // Bắt buộc phải đăng nhập (có token JWT) mới được lấy vé phụ
+        public IActionResult GetCheckoutToken([FromServices] IMemoryCache cache)
+        {
+            // 1. Lấy ID người dùng từ Token JWT
+            // Lấy Claim "id" đã được lưu trong token khi đăng nhập
+            var userIdClaim = User.FindFirstValue("id"); 
+            if (userIdClaim == null) return Unauthorized();
+
+            // 2. Tạo chuỗi ngẫu nhiên (Vé phụ)
+            var nonce = Guid.NewGuid().ToString();
+
+            // 3. Lưu chuỗi này vào Cache Server trong 5 phút
+            // Khóa (Key) của cache chính là ID người dùng
+            cache.Set(userIdClaim, nonce, TimeSpan.FromMinutes(5));
+
+            // 4. Trả về Token tạm thời cho Frontend
+            return Ok(new { checkoutToken = nonce });
         }
     }
 }
