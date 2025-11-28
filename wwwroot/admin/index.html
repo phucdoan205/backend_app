@@ -35,7 +35,7 @@
         <a href="#" class="nav-item" data-tab="categories" onclick="switchTab('categories')">
           <i class="fas fa-tags"></i> Danh Mục
         </a>
-        <a href="../user/index.html" class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+        <a href="../user/index.html" class="nav-item " data-tab="dashboard" onclick="switchTab('dashboard')">
           <i class="fas fa-tachometer-alt"></i> Xem trang chủ
         </a>
       </nav>
@@ -140,6 +140,7 @@
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." onkeyup="searchProducts()">
             </div>
+            <div id="searchResults" class="search-results"></div>
             <button class="btn-flash" onclick="openAddProductModal()">
                 <i class="fas fa-plus"></i> Thêm Sản Phẩm Mới
             </button>
@@ -289,6 +290,7 @@
       if (selectedNav) selectedNav.classList.add('active');
     }
   </script>
+
   <script src="./js/config.js"></script>
   <script src="./js/products.js"></script>
   <script src="./js/categories.js"></script>
@@ -300,6 +302,91 @@
         if (typeof loadCategoriesForProducts === "function") loadCategoriesForProducts();
         if (typeof loadProducts === "function") loadProducts();
     });
+</script>
+
+
+<script>
+// ========== TÌM KIẾM GỢI Ý SIÊU MƯỢT – CHỈ DÀNH CHO TRANG ADMIN CỦA BẠN ==========
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchProduct");
+  const resultsBox = document.getElementById("searchResults");
+  if (!searchInput || !resultsBox) return;
+
+  let allProducts = [];
+
+  // Load sản phẩm 1 lần duy nhất
+  fetch('/api/products')
+    .then(r => r.json())
+    .then(res => {
+      allProducts = res.data || res; // tùy cấu trúc API của bạn
+    });
+
+  // Tìm kiếm realtime + debounce
+  let timer;
+  searchInput.addEventListener("input", function () {
+    clearTimeout(timer);
+    const q = this.value.trim().toLowerCase();
+
+    timer = setTimeout(() => {
+      if (q === "") {
+        resultsBox.classList.remove("show");
+        return;
+      }
+
+      const matches = allProducts
+        .filter(p => 
+          (p.name && p.name.toLowerCase().includes(q)) ||
+          (p.code && p.code.toLowerCase().includes(q))
+        )
+        .slice(0, 8);
+
+      if (matches.length === 0) {
+        resultsBox.innerHTML = `<div class="result-item" style="text-align:center;color:#999;padding:20px;">Không tìm thấy sản phẩm</div>`;
+        resultsBox.classList.add("show");
+        return;
+      }
+
+      resultsBox.innerHTML = matches.map(p => `
+        <div class="result-item" onclick="openEditProduct(${p.id})">
+          <img src="${p.image || '/images/no-image.jpg'}" alt="">
+          <div class="result-info">
+            <h4>${p.name}</h4>
+            <p>Mã: ${p.code || 'N/A'} • Còn: ${p.stock || 0}</p>
+          </div>
+          <div class="result-price">${formatMoney(p.price)}</div>
+        </div>
+      `).join("");
+
+      resultsBox.classList.add("show");
+    }, 180);
+  });
+
+  // Hàm mở modal sửa sản phẩm (dùng lại hàm có sẵn của bạn)
+  window.openEditProduct = function(id) {
+    // Đây là hàm bạn ĐÃ CÓ trong products.js hoặc admin.js
+    if (typeof editProduct === "function") {
+      editProduct(id);           // hàm bạn dùng để mở modal + load data
+    } else if (typeof loadProductToModal === "function") {
+      loadProductToModal(id);
+    }
+
+    // Đóng gợi ý + xóa ô tìm kiếm
+    resultsBox.classList.remove("show");
+    searchInput.value = "";
+  };
+
+  // Click ngoài → đóng
+  document.addEventListener("click", function(e) {
+    if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
+      resultsBox.classList.remove("show");
+    }
+  });
+
+  // Định dạng tiền
+  function formatMoney(num) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num || 0);
+  }
+});
 </script>
 </body>
 </html>
