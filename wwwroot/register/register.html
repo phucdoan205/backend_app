@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký Tài Khoản</title>
+    <link rel="stylesheet" href="./style.css"> </head>
+<body class="login-body">
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>ĐĂNG KÝ</h1>
+                <p>Tạo tài khoản thành viên PC MASTER</p>
+            </div>
+            <form id="registerForm">
+                <div class="input-group">
+                    <input type="text" id="regUsername" placeholder="Tên đăng nhập" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="regEmail" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="regPassword" placeholder="Mật khẩu" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="regConfirmPass" placeholder="Nhập lại mật khẩu" required>
+                </div>
+                
+                <button type="submit" class="btn-login">ĐĂNG KÝ NGAY</button>
+                
+                <p class="error-msg" id="regError"></p>
+                
+                <div style="margin-top: 20px;">
+                    <a href="/wwwroot/login.html" style="text-decoration: none; color: #e67e22;">Đã có tài khoản? Đăng nhập</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../admin/js/"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPass = document.getElementById('regConfirmPass').value;
+            const errorMsg = document.getElementById('regError');
+
+            // Validate cơ bản
+            if (password !== confirmPass) {
+                errorMsg.textContent = "Mật khẩu nhập lại không khớp!";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Đăng ký thành công! Vui lòng đăng nhập.");
+                    window.location.href = 'login.html';
+                } else {
+                    errorMsg.textContent = data.message || "Đăng ký thất bại!";
+                }
+            } catch (err) {
+                console.error(err);
+                errorMsg.textContent = "Lỗi kết nối server!";
+            }
+        });
+    </script>
+</body>
+</html>

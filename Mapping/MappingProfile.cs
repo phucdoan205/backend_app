@@ -9,11 +9,16 @@ namespace BackendApp.Mapping
         public MappingProfile()
         {
             // entity -> dto
-            CreateMap<Product, ProductDTO>();
+            CreateMap<Product, ProductDTO>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : null));
+            
+            CreateMap<Category, CategoryDTO>();
 
         // dto -> entity (KHI UPDATE)
             CreateMap<ProductDTO, Product>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore()); // QUAN TRỌNG!
+                .ForMember(dest => dest.Id, opt => opt.Ignore()) // QUAN TRỌNG!
+                .ForMember(dest => dest.Category, opt => opt.Ignore());
+            CreateMap<CategoryDTO, Category>();
             CreateMap<Customer, CustomerDTO>().ReverseMap();
              // Map DTO -> Order
             CreateMap<OrderCreateDTO, Order>()
@@ -21,9 +26,8 @@ namespace BackendApp.Mapping
                 .ForMember(dest => dest.CreateDate, opt => opt.Ignore())
                 .ForMember(dest => dest.Status, opt => opt.Ignore())
                 .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
-                .ForMember(dest => dest.OrderDetails, opt => opt.Ignore());
-
-            // Map OrderItemDTO -> OrderDetail
+                .ForMember(dest => dest.CreateData, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.Ignore());
             CreateMap<OrderItemDTO, OrderDetail>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore())

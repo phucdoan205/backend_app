@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Sản Phẩm</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-body">
+
+  <header class="topbar">
+      <div class="logo">PC MASTER<span class="admin-badge">ADMIN</span></div>
+    
+    <div class="user-menu">
+      <span>Chào, <strong id="adminName">Admin</strong></span>
+      <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i>Đăng xuất</button>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <nav>
+        <a href="#" class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+          <i class="fas fa-tachometer-alt"></i> Tổng Quan
+        </a>
+        <a href="#" class="nav-item" data-tab="orders" onclick="switchTab('orders')">
+          <i class="fas fa-shopping-cart"></i> Quản Lý Đơn Hàng
+        </a>
+        <a href="#" class="nav-item" data-tab="products" onclick="switchTab('products')">
+          <i class="fas fa-box"></i> Quản Lý Sản Phẩm
+        </a>
+        <a href="#" class="nav-item" data-tab="users" onclick="switchTab('users')">
+          <i class="fas fa-users"></i> Khách Hàng
+        </a>
+        <a href="#" class="nav-item" data-tab="categories" onclick="switchTab('categories')">
+          <i class="fas fa-tags"></i> Danh Mục
+        </a>
+        <a href="../user/index.html" class="nav-item " data-tab="dashboard" onclick="switchTab('dashboard')">
+          <i class="fas fa-tachometer-alt"></i> Xem trang chủ
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+
+      <section id="dashboard" class="tab active">
+        <div class="section-header">
+          <h2><i class="fas fa-tachometer-alt"></i> Báo Cáo Tổng Quan</h2>
+        </div>
+        
+        <div class="kpi-grid">
+            <div class="kpi-card blue">
+                <h3>Doanh Thu Tháng</h3>
+                <p class="kpi-value">125.000.000đ</p>
+                <span class="kpi-sub"><i class="fas fa-arrow-up"></i> 15% so với tháng trước</span>
+            </div>
+            <div class="kpi-card green">
+                <h3>Đơn Hàng Mới</h3>
+                <p class="kpi-value">45</p>
+                <span class="kpi-sub">Đang chờ xử lý</span>
+            </div>
+            <div class="kpi-card orange">
+                <h3>Sản Phẩm</h3>
+                <p class="kpi-value">120</p>
+                <span class="kpi-sub">Trong kho</span>
+            </div>
+            <div class="kpi-card red">
+                <h3>Khách Hàng</h3>
+                <p class="kpi-value">350</p>
+                <span class="kpi-sub">Thành viên đăng ký</span>
+            </div>
+        </div>
+
+        <div class="chart-container" style="margin-top:30px; background:white; padding:20px; border-radius:12px; height:400px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+          <h3 style="margin-bottom: 20px; color: #555;">Biểu Đồ Doanh Thu (7 Ngày Gần Nhất)</h3>
+    
+       <div style="height: 320px;">
+       <canvas id="revenueChart"></canvas>
+    </div>
+</div>
+      </section>
+
+      <section id="orders" class="tab" style="display:none;">
+        <div class="section-header">
+          <h2><i class="fas fa-shopping-cart"></i> Quản Lý Đơn Hàng</h2>
+          <select style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+              <option value="">Tất cả trạng thái</option>
+              <option value="0">Mới đặt</option>
+              <option value="1">Đang giao</option>
+              <option value="2">Hoàn thành</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th>Mã Đơn</th>
+                <th>Khách Hàng</th>
+                <th>Ngày Đặt</th>
+                <th>Tổng Tiền</th>
+                <th>Trạng Thái</th>
+                <th>Hành Động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ORD001</td>
+                <td>Nguyễn Văn A</td>
+                <td>20/11/2024</td>
+                <td>25.000.000đ</td>
+                <td><span class="badge pending">Mới</span></td>
+                <td style="text-align:center;"><button class="btn-action-edit"><i class="fas fa-eye"></i></button></td>
+              </tr>
+              <tr>
+                <td>#ORD002</td>
+                <td>Trần Thị B</td>
+                <td>19/11/2024</td>
+                <td>2.500.000đ</td>
+                <td><span class="badge shipping">Đang giao</span></td>
+                <td style="text-align:center;"><button class="btn-action-edit"><i class="fas fa-eye"></i></button></td>
+              </tr>
+              <tr>
+                <td>#ORD003</td>
+                <td>Lê Văn C</td>
+                <td>18/11/2024</td>
+                <td>15.000.000đ</td>
+                <td><span class="badge completed">Hoàn thành</span></td>
+                <td style="text-align:center;"><button class="btn-action-edit"><i class="fas fa-eye"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="products" class="tab" style="display:none;">
+         <div class="section-header">
+            <h2><i class="fas fa-cubes"></i> Quản Lý Sản Phẩm</h2>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." onkeyup="searchProducts()">
+            </div>
+            <div id="searchResults" class="search-results"></div>
+            <button class="btn-flash" onclick="openAddProductModal()">
+                <i class="fas fa-plus"></i> Thêm Sản Phẩm Mới
+            </button>
+         </div>
+         <div class="table-container">
+            <table class="product-table" id="productTable">
+                <thead>
+                    <tr>
+                        <th class="product-table_id">ID</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Danh Mục</th>
+                        <th>Giá</th>
+                        <th>Kho</th>
+                        <th width="120" style="text-align:center;">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+         </div>
+      </section>
+
+      <section id="users" class="tab" style="display:none;">
+        <div class="section-header">
+            <h2><i class="fas fa-users"></i> Danh Sách Khách Hàng</h2>
+        </div>
+        <div class="table-container">
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên Đăng Nhập</th>
+                        <th>Email</th>
+                        <th>Vai Trò</th>
+                        <th>Ngày Đăng Ký</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>user123</td>
+                        <td>user@gmail.com</td>
+                        <td>USER</td>
+                        <td>20/10/2024</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </section>
+
+      <section id="categories" class="tab" style="display:none;">
+         <div class="section-header">
+            <h2><i class="fas fa-tags"></i> Quản Lý Danh Mục</h2>
+            <button class="btn-flash" onclick="openAddCategoryModal()">
+                <i class="fas fa-plus"></i> Thêm Danh Mục Mới
+            </button>
+         </div>
+         <div class="table-container">
+            <table class="product-table" id="categoryTable">
+                <thead>
+                    <tr>
+                        <th class="product-table_id">ID</th>
+                        <th>Tên Danh Mục</th>
+                        <th>Mô Tả</th>
+                        <th width="120" style="text-align:center;">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+         </div>
+      </section>
+
+    </main>
+  </div>
+  <!-- MODAL SIÊU ĐẸP + CHẠY NGON -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Thêm Sản Phẩm Mới</h2>
+      <span class="close">×</span>
+    </div>
+    <form id="productForm">
+      <input type="hidden" id="productId">
+      <div class="form-grid">
+        <div class="fg">
+          <label>Tên sản phẩm <span class="req">*</span></label>
+          <input type="text" id="productName" required>
+        </div>
+        <div class="fg">
+          <label>Danh mục <span class="req">*</span></label>
+          <select id="category" required></select>
+        </div>
+        <div class="fg">
+          <label>Giá (₫) <span class="req">*</span></label>
+          <input type="number" id="price" required min="1">
+        </div>
+        <div class="fg">
+          <label>Kho</label>
+          <input type="number" id="stock" value="0" min="0">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn save">Lưu</button>
+        <button type="button" id="btnDeleteProduct" class="btn delete" style="display:none;">Xóa</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+    <script>
+        // Kiểm tra ngay lập tức khi vào trang
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) {
+            // alert("Bạn chưa đăng nhập!");
+            window.location.href = '../login.html';
+        } else {
+            const user = JSON.parse(userStr);
+            // So sánh case-insensitive để tránh lỗi do khác biệt chữ hoa/thường
+            if (user.role && user.role.toUpperCase() !== 'ADMIN') {
+                document.write("<h1 style='color:red; text-align:center; margin-top:50px'>403 - BẠN KHÔNG CÓ QUYỀN TRUY CẬP!</h1>");
+                document.write("<div style='text-align:center'><a href='../user/index.html'>Quay về trang chủ</a></div>");
+                // Ngừng tải trang
+                window.stop(); 
+            }
+        }
+    </script>
+
+    
+  <script>
+    // Function to switch tabs
+    function switchTab(tabName) {
+      // 1. Ẩn tất cả tab content
+      document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+
+      // 2. Bỏ active sidebar
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+      // 3. Hiện tab được chọn
+      const selectedTab = document.getElementById(tabName);
+      if (selectedTab) {
+        selectedTab.style.display = 'block';
+        setTimeout(() => selectedTab.classList.add('active'), 10); // Hack để animation chạy mượt
+      }
+
+      // 4. Active sidebar item
+      const selectedNav = document.querySelector(`[data-tab="${tabName}"]`);
+      if (selectedNav) selectedNav.classList.add('active');
+    }
+  </script>
+
+  <script src="./js/config.js"></script>
+  <script src="./js/products.js"></script>
+  <script src="./js/categories.js"></script>
+  <script src="./js/chart.js"></script>
+  <script src="./js/admin.js"></script>
+  <script>
+    // Load ngay khi trang mở – không cần đợi bấm tab
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof loadCategoriesForProducts === "function") loadCategoriesForProducts();
+        if (typeof loadProducts === "function") loadProducts();
+    });
+</script>
+
+
+<script>
+// ========== TÌM KIẾM GỢI Ý SIÊU MƯỢT – CHỈ DÀNH CHO TRANG ADMIN CỦA BẠN ==========
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchProduct");
+  const resultsBox = document.getElementById("searchResults");
+  if (!searchInput || !resultsBox) return;
+
+  let allProducts = [];
+
+  // Load sản phẩm 1 lần duy nhất
+  fetch('/api/products')
+    .then(r => r.json())
+    .then(res => {
+      allProducts = res.data || res; // tùy cấu trúc API của bạn
+    });
+
+  // Tìm kiếm realtime + debounce
+  let timer;
+  searchInput.addEventListener("input", function () {
+    clearTimeout(timer);
+    const q = this.value.trim().toLowerCase();
+
+    timer = setTimeout(() => {
+      if (q === "") {
+        resultsBox.classList.remove("show");
+        return;
+      }
+
+      const matches = allProducts
+        .filter(p => 
+          (p.name && p.name.toLowerCase().includes(q)) ||
+          (p.code && p.code.toLowerCase().includes(q))
+        )
+        .slice(0, 8);
+
+      if (matches.length === 0) {
+        resultsBox.innerHTML = `<div class="result-item" style="text-align:center;color:#999;padding:20px;">Không tìm thấy sản phẩm</div>`;
+        resultsBox.classList.add("show");
+        return;
+      }
+
+      resultsBox.innerHTML = matches.map(p => `
+        <div class="result-item" onclick="openEditProduct(${p.id})">
+          <img src="${p.image || '/images/no-image.jpg'}" alt="">
+          <div class="result-info">
+            <h4>${p.name}</h4>
+            <p>Mã: ${p.code || 'N/A'} • Còn: ${p.stock || 0}</p>
+          </div>
+          <div class="result-price">${formatMoney(p.price)}</div>
+        </div>
+      `).join("");
+
+      resultsBox.classList.add("show");
+    }, 180);
+  });
+
+  // Hàm mở modal sửa sản phẩm (dùng lại hàm có sẵn của bạn)
+  window.openEditProduct = function(id) {
+    // Đây là hàm bạn ĐÃ CÓ trong products.js hoặc admin.js
+    if (typeof editProduct === "function") {
+      editProduct(id);           // hàm bạn dùng để mở modal + load data
+    } else if (typeof loadProductToModal === "function") {
+      loadProductToModal(id);
+    }
+
+    // Đóng gợi ý + xóa ô tìm kiếm
+    resultsBox.classList.remove("show");
+    searchInput.value = "";
+  };
+
+  // Click ngoài → đóng
+  document.addEventListener("click", function(e) {
+    if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
+      resultsBox.classList.remove("show");
+    }
+  });
+
+  // Định dạng tiền
+  function formatMoney(num) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num || 0);
+  }
+});
+</script>
+</body>
+</html>

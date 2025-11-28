@@ -1,9 +1,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using BackendApp.Data;
 using BackendApp.DTOs;
 using BackendApp.Models;
+using System.Linq;
 
 namespace BackendApp.Controllers
 {
@@ -21,16 +23,45 @@ namespace BackendApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] int? categoryId = null)
         {
-            var list = _db.Products.ToList();
-            return Ok(_mapper.Map<List<ProductDTO>>(list));
+            try
+            {
+                // Load products với category (nếu có)
+                var query = _db.Products
+                    .Include(p => p.Category)
+                    .AsQueryable();
+                
+                if (categoryId.HasValue)
+                {
+                    query = query.Where(p => p.CategoriesID == categoryId.Value);
+                }
+                
+                var list = query.ToList();
+                
+                // Map sang DTO
+                var dtos = _mapper.Map<List<ProductDTO>>(list);
+                
+                return Ok(dtos);
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi chi tiết
+                Console.WriteLine($"Error in GetAllProducts: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                
+                return StatusCode(500, new { 
+                    message = "Lỗi khi tải danh sách sản phẩm", 
+                    error = ex.Message,
+                    details = ex.InnerException?.Message 
+                });
+            }
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var p = _db.Products.Find(id);
+            var p = _db.Products.Include(p => p.Category).FirstOrDefault(p => p.Id == id);
             if (p == null) return NotFound();
             return Ok(_mapper.Map<ProductDTO>(p));
         }
