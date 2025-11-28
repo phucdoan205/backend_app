@@ -13,9 +13,11 @@
     <header>
         <div class="logo">PC MASTER</div>
         <div class="search-bar">
-            <input type="text" placeholder="Bạn tìm gì hôm nay?">
-            <button><i class="fas fa-search"></i></button>
-        </div>
+    <input type="text" id="homeSearchInput" placeholder="Bạn tìm gì hôm nay?" onkeypress="handleEnter(event)">
+    <button onclick="redirectToSearch()">
+        <i class="fas fa-search"></i>
+    </button>
+</div>
         <div class="user-actions" id="user-info"></div>
         <a href="../user/shoppingCart/cart.html" class="cart-icon">
             <i class="fas fa-shopping-cart"></i>

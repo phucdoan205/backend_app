@@ -181,3 +181,24 @@ const logoutBtn = document.getElementById('logoutBtn');
             }
         });
     }
+
+// 1. Hàm chuyển hướng sang trang find.html
+function redirectToSearch() {
+    const input = document.getElementById('homeSearchInput');
+    if (!input) return;
+
+    const keyword = input.value.trim();
+    
+    if (keyword) {
+        // Chuyển hướng và kèm theo từ khóa trên URL (VD: ?q=vga)
+        // LƯU Ý: Hãy kiểm tra đường dẫn 'user/find/find.html' có đúng với thư mục của bạn không
+        window.location.href = `/user/find/find.html?q=${encodeURIComponent(keyword)}`;
+    }
+}
+
+// 2. Hàm xử lý khi nhấn phím Enter
+function handleEnter(event) {
+    if (event.key === 'Enter') {
+        redirectToSearch();
+    }
+}
