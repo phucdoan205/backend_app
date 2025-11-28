@@ -133,23 +133,36 @@ function scrollCarousel(containerId, direction) {
 function addToCart(id, name, price, image) {
     // ... Code cũ ...
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existItem = cart.find(x => x.productId === id);
+    const existItem = cart.find(x => x.id == id); //Loi o dong nay
+    console.log(cart[0])
+    // console.log(existItem)
     if (existItem) {
         existItem.quantity += 1;
     } else {
-        cart.push({ productId: id, name: name, price: price, quantity: 1, image: image});
+        cart.push({id: id, name: name, price: price, quantity: 1, image: image});
+        updateCartCount(cart);
     }
     localStorage.setItem('cart', JSON.stringify(cart));
     alert("Đã thêm " + name + " vào giỏ hàng!");
-    updateCartCount();
 }
 
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+function updateCartCount(currentCart = undefined) {
+    let total = 0
+    if (currentCart){
+        console.log("Total: ", total)
+        // total = currentCart.reduce((sum, item) => sum + item.quantity, 0);
+        total = currentCart.length || 0
+    } else {
+        // console.log("Load from DOMLoaded.")
+        currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        // console.log(currentCart)
+        // total = currentCart.reduce((sum, item) => sum + item.quantity, 0);
+        total = currentCart.length || 0
+    }
     const badge = document.querySelector('.badge'); 
     if (badge) badge.innerText = total;
 }
+
 const logoutBtn = document.getElementById('logoutBtn');
     
     if (logoutBtn) {

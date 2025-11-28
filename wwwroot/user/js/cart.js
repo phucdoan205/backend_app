@@ -31,7 +31,6 @@ function renderCartPage() {
                         <img src="${item.image}" alt="${item.name}">
                         <div>
                             <h4>${item.name}</h4>
-                            <span style="font-size:12px; color:#888">Mã SP: ${item.id}</span>
                         </div>
                     </div>
                 </td>
@@ -79,12 +78,14 @@ function updateQuantity(id, newQty) {
 function removeItem(id) {
     if(confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cart = cart.filter(p => p.id !== id);
+                id = id;
+        cart = cart.filter(p => p.id  !== id);
         localStorage.setItem('cart', JSON.stringify(cart));
         renderCartPage();
         // Cập nhật lại badge số lượng trên menu (nếu có script chung)
     }
 }
+
 
 // Khởi chạy khi vào trang
 document.addEventListener('DOMContentLoaded', () => {
