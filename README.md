@@ -28,7 +28,7 @@ Chạy API: Mở Terminal tại thư mục dự án Back-end và sử dụng l�
 
 Lưu ý: Khi khởi động, hệ thống sẽ tự động tạo Roles (Admin, User) và tài khoản Admin mẫu.
 
-Thông tin đăng nhập Admin mẫu: Email: admin@example.com, Mật khẩu: Admin@123.
+Thông tin đăng nhập Admin mẫu: Email: admin, Mật khẩu: 123.
 
 3.2. Khởi động Front-end (ECommerceClient)
 Kiểm tra kết nối: Đảm bảo file app.js đang trỏ đến đúng địa chỉ API Backend (localhost).
@@ -36,3 +36,10 @@ Kiểm tra kết nối: Đảm bảo file app.js đang trỏ đến đúng đị
 Mở ứng dụng: Mở trực tiếp file index.html trong thư mục Front-end bằng bất kỳ trình duyệt web nào.
 
 Sử dụng: Sau khi mở, hãy điều hướng đến trang Đăng nhập (#login) để bắt đầu sử dụng chức năng Quản lý Sản phẩm hoặc Tạo Đơn hàng.
+
+
+CÀI ĐẶT CÁC GÓI CẦN THIẾT
+
+Asp.NetCore hosting Bundle:          https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.22/dotnet-hosting-8.0.22-win.exe
+Net 8.0:                             https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+Rewrite module 2.0:                  https://www.iis.net/downloads/microsoft/url-rewrite
