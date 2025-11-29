@@ -28,7 +28,7 @@ Chạy API: Mở Terminal tại thư mục dự án Back-end và sử dụng l�
 
 Lưu ý: Khi khởi động, hệ thống sẽ tự động tạo Roles (Admin, User) và tài khoản Admin mẫu.
 
-Thông tin đăng nhập Admin mẫu: Email: admin@example.com, Mật khẩu: Admin@123.
+Thông tin đăng nhập Admin mẫu: Email: admin, Mật khẩu: 123.
 
 3.2. Khởi động Front-end (ECommerceClient)
 Kiểm tra kết nối: Đảm bảo file app.js đang trỏ đến đúng địa chỉ API Backend (localhost).
